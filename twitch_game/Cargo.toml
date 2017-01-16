@@ -1,0 +1,7 @@
+[package]
+name = "twitch_game"
+version = "0.1.0"
+authors = ["Kiley Owen <yelikdev@gmail.com>"]
+
+[dependencies]
+core = { path="../core" }

@@ -1,0 +1,24 @@
+[package]
+name = "graphics"
+version = "0.1.0"
+authors = ["Kiley Owen <yelikdev@gmail.com>"]
+
+[dependencies]
+gfx = "0.13.0"
+gfx_device_gl = "0.12.0"
+gfx_window_glutin = { version = "0.13.1", optional = true }
+gfx_window_sdl = { version = "0.4.0", optional = true }
+glutin = { version = "0.7.2", optional = true }
+image = "0.12.1"
+log = "0.3.6"
+sdl2 = { version = "0.27.3", optional = true }
+find_folder = "0.3.0"
+
+utils = {path="../utils"}
+
+[features]
+g_glutin = ["glutin", "gfx_window_glutin"]
+g_sdl2 = ["sdl2", "gfx_window_sdl"]
+both = ["g_glutin", "g_sdl2"]
+
+default = ["both"]
