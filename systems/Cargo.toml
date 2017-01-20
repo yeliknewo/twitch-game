@@ -4,3 +4,10 @@ version = "0.1.0"
 authors = ["Kiley Owen <yelikdev@gmail.com>"]
 
 [dependencies]
+log = "0.3.6"
+find_folder = "0.3.0"
+specs = "0.7.0"
+gfx =  "0.13.0"
+graphics = { path="../graphics" }
+components = { path="../components" }
+utils = { path="../utils" }
