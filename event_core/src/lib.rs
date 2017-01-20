@@ -1,6 +1,3 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-    }
-}
+mod duo_channel;
+
+pub use duo_channel::{BothChannel, DuoChannel};

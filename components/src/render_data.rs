@@ -70,7 +70,7 @@ impl RenderData {
         if self.dirty_1 {
             self.dirty_1 = false;
             true
-        } else{
+        } else {
             false
         }
     }

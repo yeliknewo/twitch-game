@@ -1,7 +1,7 @@
 use cgmath::{Euler, Matrix4, Point2, Rad, Vector3};
-use cgmath::prelude::{Zero};
+use cgmath::prelude::Zero;
 use specs::{Component, VecStorage};
-use utils::{Coord};
+use utils::Coord;
 
 #[derive(Debug)]
 pub struct Transform {

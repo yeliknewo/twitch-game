@@ -1,4 +1,4 @@
-use ::Delta;
+use Delta;
 #[derive(Debug)]
 pub struct FpsCounter {
     current_delta: Delta,

@@ -1,7 +1,7 @@
+use gfx;
 use gfx::{PipelineState, Slice};
 use gfx::state::Rasterizer;
-use ::shaders::Shaders;
-use ::gfx;
+use shaders::Shaders;
 
 pub type Index = u32;
 static VERTEX: &'static [u8] = include_bytes!("shaders/spritesheet_150_v.glsl");
@@ -42,7 +42,10 @@ gfx_defines! {
 
 impl Vertex {
     pub fn new(pos: [f32; 3], uv: [f32; 2]) -> Vertex {
-        Vertex { pos: pos, uv: uv }
+        Vertex {
+            pos: pos,
+            uv: uv,
+        }
     }
 }
 
@@ -57,10 +60,7 @@ pub struct Bundle<R>
 impl<R> Bundle<R>
     where R: gfx::Resources
 {
-    pub fn new(slice: Slice<R>,
-               pso: PipelineState<R, pipe::Meta>,
-               data: pipe::Data<R>)
-               -> Bundle<R> {
+    pub fn new(slice: Slice<R>, pso: PipelineState<R, pipe::Meta>, data: pipe::Data<R>) -> Bundle<R> {
         Bundle {
             slice: slice,
             pso: pso,

@@ -1,10 +1,11 @@
+
+
+use ColorFormat;
 use gfx::{Factory, Resources};
 use gfx::handle::ShaderResourceView;
 use gfx::texture::{AaMode, Kind, Size};
-use std::path::Path;
 use image;
-
-use ::ColorFormat;
+use std::path::Path;
 
 pub fn load_texture<R, F, P>(factory: &mut F, path: P) -> ShaderResourceView<R, [f32; 4]>
     where P: AsRef<Path>,

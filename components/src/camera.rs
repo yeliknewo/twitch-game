@@ -14,12 +14,7 @@ pub struct Camera {
 }
 
 impl Camera {
-    pub fn new(eye: Point3<f32>,
-               target: Point3<f32>,
-               up: Vector3<f32>,
-               ortho_helper: OrthohgraphicHelper,
-               is_main: bool)
-               -> Camera {
+    pub fn new(eye: Point3<f32>, target: Point3<f32>, up: Vector3<f32>, ortho_helper: OrthohgraphicHelper, is_main: bool) -> Camera {
         Camera {
             eye: eye,
             target: target,
@@ -81,10 +76,7 @@ impl Camera {
     pub fn screen_to_world_point(&self, screen_point: Point2<f32>) -> Point2<f32> {
         let view_depth = self.ortho_helper.get_view_depth();
 
-        Point2::new((((screen_point.x * 2.0) - 1.0) * view_depth) * 4.0 / 5.0 + self.get_offset().x,
-                    (((1.0 - screen_point.y) * 2.0 - 1.0) * view_depth /
-                     self.ortho_helper.get_aspect_ratio()) * 4.0 / 5.0 +
-                    self.get_offset().y)
+        Point2::new((((screen_point.x * 2.0) - 1.0) * view_depth) * 4.0 / 5.0 + self.get_offset().x, (((1.0 - screen_point.y) * 2.0 - 1.0) * view_depth / self.ortho_helper.get_aspect_ratio()) * 4.0 / 5.0 + self.get_offset().y)
     }
 
     fn set_dirty(&mut self) {
