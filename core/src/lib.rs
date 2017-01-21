@@ -2,6 +2,9 @@
 extern crate log;
 extern crate gfx;
 extern crate time;
+extern crate glutin;
+extern crate specs;
+extern crate components;
 
 extern crate art;
 extern crate event_core;
@@ -19,7 +22,8 @@ use events::main_x_control::{MainFromControl, MainToControl};
 use events::main_x_render::{MainFromRender, MainToRender};
 use game::Game;
 use gfx::Device;
-use handle_events::handle_events;
+use handle_events::glutin::handle_events;
+// use handle_events::sdl2::handle_events;
 use std::thread;
 use utils::OrthographicHelper;
 

@@ -28,51 +28,42 @@ pub mod texture;
 
 pub type ColorFormat = ::gfx::format::Srgba8;
 pub type DepthFormat = ::gfx::format::DepthStencil;
+pub type TGDevice = ::gfx_device_gl::Device;
+pub type TGFactory = ::gfx_device_gl::Factory;
+pub type TGResources = ::gfx_device_gl::Resources;
+pub type TGCommandBuffer = ::gfx_device_gl::CommandBuffer;
+pub type TGEncoder = ::gfx::Encoder<TGResources, TGCommandBuffer>;
+pub type TGTexture = ::gfx::handle::ShaderResourceView<TGResources, [f32; 4]>;
+pub type OutColor = ::gfx::handle::RenderTargetView<TGResources, ColorFormat>;
+pub type OutDepth = ::gfx::handle::DepthStencilView<TGResources, DepthFormat>;
 
 pub type WindowSettings<'a> = (&'a str, u32, u32);
 
-use gfx::Resources;
-use gfx::handle::{DepthStencilView, RenderTargetView};
-
-pub struct GfxWindow<W, T, D, F, R>
-    where R: Resources
-{
-    out_color: RenderTargetView<R, ColorFormat>,
-    out_depth: DepthStencilView<R, DepthFormat>,
-    device: D,
-    factory: F,
+pub struct GfxWindow<W, T> {
+    out_color: OutColor,
+    out_depth: OutDepth,
+    device: TGDevice,
+    factory: TGFactory,
     window: W,
     extras: T,
 }
 
 #[cfg(feature = "g_glutin")]
-impl<T, D, F, R> GfxWindow<glutin::Window, T, D, F, R>
-    where R: Resources
-{
+impl<T> GfxWindow<glutin::Window, T> {
     pub fn swap_buffers(&mut self) {
         self.get_mut_window().swap_buffers().unwrap_or_else(|err| panic!("{:?}", err));
     }
 }
 
 #[cfg(feature = "g_sdl2")]
-impl<T, D, F, R> GfxWindow<sdl2::video::Window, T, D, F, R>
-    where R: Resources
-{
+impl<T> GfxWindow<sdl2::video::Window, T> {
     pub fn swap_buffers(&mut self) {
         self.get_mut_window().gl_swap_window();
     }
 }
 
-impl<W, T, D, F, R> GfxWindow<W, T, D, F, R>
-    where R: Resources
-{
-    pub fn new(out_color: RenderTargetView<R, ColorFormat>,
-               out_depth: DepthStencilView<R, DepthFormat>,
-               device: D,
-               factory: F,
-               window: W,
-               extras: T)
-               -> GfxWindow<W, T, D, F, R> {
+impl<W, T> GfxWindow<W, T> {
+    pub fn new(out_color: OutColor, out_depth: OutDepth, device: TGDevice, factory: TGFactory, window: W, extras: T) -> GfxWindow<W, T> {
         GfxWindow {
             out_color: out_color,
             out_depth: out_depth,
@@ -83,19 +74,19 @@ impl<W, T, D, F, R> GfxWindow<W, T, D, F, R>
         }
     }
 
-    pub fn get_out_color(&self) -> &RenderTargetView<R, ColorFormat> {
+    pub fn get_out_color(&self) -> &OutColor {
         &self.out_color
     }
 
-    pub fn get_out_depth(&self) -> &DepthStencilView<R, DepthFormat> {
+    pub fn get_out_depth(&self) -> &OutDepth {
         &self.out_depth
     }
 
-    pub fn get_device(&self) -> &D {
+    pub fn get_device(&self) -> &TGDevice {
         &self.device
     }
 
-    pub fn get_factory(&self) -> &F {
+    pub fn get_factory(&self) -> &TGFactory {
         &self.factory
     }
 
@@ -107,11 +98,11 @@ impl<W, T, D, F, R> GfxWindow<W, T, D, F, R>
         &self.extras
     }
 
-    pub fn get_mut_device(&mut self) -> &mut D {
+    pub fn get_mut_device(&mut self) -> &mut TGDevice {
         &mut self.device
     }
 
-    pub fn get_mut_factory(&mut self) -> &mut F {
+    pub fn get_mut_factory(&mut self) -> &mut TGFactory {
         &mut self.factory
     }
 

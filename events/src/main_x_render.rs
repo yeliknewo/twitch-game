@@ -1,9 +1,13 @@
-#[derive(Debug)]
-pub enum MainFromRender<E, ID> {
-    Encoder(E, ID),
+use graphics::TGEncoder;
+
+pub enum MainFromRender<ID>
+    where ID: Send
+{
+    Encoder(TGEncoder, ID),
 }
 
-#[derive(Debug)]
-pub enum MainToRender<E, ID> {
-    Encoder(E, ID),
+pub enum MainToRender<ID>
+    where ID: Send
+{
+    Encoder(TGEncoder, ID),
 }

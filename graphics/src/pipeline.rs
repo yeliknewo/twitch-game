@@ -1,3 +1,6 @@
+
+use TGEncoder;
+use TGResources;
 use gfx;
 use gfx::{PipelineState, Slice};
 use gfx::state::Rasterizer;
@@ -49,18 +52,14 @@ impl Vertex {
     }
 }
 
-pub struct Bundle<R>
-    where R: gfx::Resources
-{
-    slice: Slice<R>,
-    pso: PipelineState<R, pipe::Meta>,
-    data: pipe::Data<R>,
+pub struct Bundle {
+    slice: Slice<TGResources>,
+    pso: PipelineState<TGResources, pipe::Meta>,
+    data: pipe::Data<TGResources>,
 }
 
-impl<R> Bundle<R>
-    where R: gfx::Resources
-{
-    pub fn new(slice: Slice<R>, pso: PipelineState<R, pipe::Meta>, data: pipe::Data<R>) -> Bundle<R> {
+impl Bundle {
+    pub fn new(slice: Slice<TGResources>, pso: PipelineState<TGResources, pipe::Meta>, data: pipe::Data<TGResources>) -> Bundle {
         Bundle {
             slice: slice,
             pso: pso,
@@ -68,17 +67,15 @@ impl<R> Bundle<R>
         }
     }
 
-    pub fn get_data(&self) -> &pipe::Data<R> {
+    pub fn get_data(&self) -> &pipe::Data<TGResources> {
         &self.data
     }
 
-    pub fn get_mut_data(&mut self) -> &mut pipe::Data<R> {
+    pub fn get_mut_data(&mut self) -> &mut pipe::Data<TGResources> {
         &mut self.data
     }
 
-    pub fn encode<C>(&self, encoder: &mut gfx::Encoder<R, C>)
-        where C: gfx::CommandBuffer<R>
-    {
+    pub fn encode(&self, encoder: &mut TGEncoder) {
         encoder.draw(&self.slice, &self.pso, &self.data);
     }
 }

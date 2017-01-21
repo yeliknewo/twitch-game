@@ -1,16 +1,11 @@
-
-
-use ColorFormat;
-use gfx::{Factory, Resources};
-use gfx::handle::ShaderResourceView;
+use {ColorFormat, TGFactory, TGTexture};
+use gfx::Factory;
 use gfx::texture::{AaMode, Kind, Size};
 use image;
 use std::path::Path;
 
-pub fn load_texture<R, F, P>(factory: &mut F, path: P) -> ShaderResourceView<R, [f32; 4]>
-    where P: AsRef<Path>,
-          F: Factory<R>,
-          R: Resources
+pub fn load_texture<P>(factory: &mut TGFactory, path: P) -> TGTexture
+    where P: AsRef<Path>
 {
     let image = match image::open(path) {
             Ok(image) => image,

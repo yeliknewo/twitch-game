@@ -1,38 +1,30 @@
 use components::{Camera, RenderData, RenderId, Transform};
 use event_core::DuoChannel;
 use events::main_x_render::{MainFromRender, MainToRender};
-use gfx::{CommandBuffer, Encoder, Primitive, Resources};
-use gfx::handle::{DepthStencilView, RenderTargetView, ShaderResourceView};
+use gfx::Primitive;
 use gfx::texture::{FilterMethod, SamplerInfo, WrapMode};
 use gfx::traits::{Factory, FactoryExt};
-use graphics::{ColorFormat, DepthFormat};
+use graphics::{ColorFormat, DepthFormat, OutColor, OutDepth, TGEncoder, TGFactory, TGTexture};
 use graphics::pipeline::{Bundle, Packet, ProjectionData, TextureData, make_shaders, pipe};
 use graphics::shaders::Shaders;
 use specs::{RunArg, System};
 use std::sync::Arc;
 use utils::Delta;
 
-pub struct RenderSystem<ID, R, C>
-    where ID: Send + Eq,
-          R: Send + Resources,
-          C: Send + CommandBuffer<R>
+pub struct RenderSystem<ID>
+    where ID: Send + Eq
 {
-    main_channel: DuoChannel<ID, MainFromRender<Encoder<R, C>, ID>, MainToRender<Encoder<R, C>, ID>>,
-    out_color: RenderTargetView<R, ColorFormat>,
-    out_depth: DepthStencilView<R, DepthFormat>,
-    bundles: Arc<Vec<Bundle<R>>>,
+    main_channel: DuoChannel<ID, MainFromRender<ID>, MainToRender<ID>>,
+    out_color: OutColor,
+    out_depth: OutDepth,
+    bundles: Arc<Vec<Bundle>>,
     shaders: Shaders,
 }
 
-impl<ID, R, C> RenderSystem<ID, R, C>
-    where ID: Send + Eq,
-          R: Send + Resources,
-          C: Send + CommandBuffer<R>
+impl<ID> RenderSystem<ID>
+    where ID: Send + Eq
 {
-    pub fn new(main_channel: DuoChannel<ID, MainFromRender<Encoder<R, C>, ID>, MainToRender<Encoder<R, C>, ID>>,
-               out_color: RenderTargetView<R, ColorFormat>,
-               out_depth: DepthStencilView<R, DepthFormat>)
-               -> RenderSystem<ID, R, C> {
+    pub fn new(main_channel: DuoChannel<ID, MainFromRender<ID>, MainToRender<ID>>, out_color: OutColor, out_depth: OutDepth) -> RenderSystem<ID> {
         RenderSystem {
             main_channel: main_channel,
             out_color: out_color,
@@ -42,9 +34,7 @@ impl<ID, R, C> RenderSystem<ID, R, C>
         }
     }
 
-    pub fn add_render<F>(&mut self, factory: &mut F, packet: &Packet, texture: ShaderResourceView<R, [f32; 4]>) -> RenderId
-        where F: Factory<R> + FactoryExt<R>
-    {
+    pub fn add_render<F>(&mut self, factory: &mut TGFactory, packet: &Packet, texture: TGTexture) -> RenderId {
         let shader_set = factory.create_shader_set(self.shaders.get_vertex_shader(), self.shaders.get_fragment_shader())
             .unwrap_or_else(|err| panic!("Create Shader Set Error: {:?}", err));
 
@@ -76,7 +66,7 @@ impl<ID, R, C> RenderSystem<ID, R, C>
         RenderId::new(id)
     }
 
-    fn render(&mut self, arg: &RunArg, mut encoder: Encoder<R, C>, encoder_id: ID) {
+    fn render(&mut self, arg: &RunArg, mut encoder: TGEncoder, encoder_id: ID) {
         use specs::Join;
 
         let (render_ids, mut transforms, mut cameras, mut render_datas) =
@@ -147,7 +137,7 @@ impl<ID, R, C> RenderSystem<ID, R, C>
         self.main_channel.send(MainFromRender::Encoder(encoder, encoder_id));
     }
 
-    fn process_event(&mut self, arg: &RunArg, event: MainToRender<Encoder<R, C>, ID>) -> bool {
+    fn process_event(&mut self, arg: &RunArg, event: MainToRender<ID>) -> bool {
         match event {
             MainToRender::Encoder(encoder, encoder_id) => {
                 self.render(arg, encoder, encoder_id);
@@ -157,12 +147,8 @@ impl<ID, R, C> RenderSystem<ID, R, C>
     }
 }
 
-impl<ID, R, C> System<f64> for RenderSystem<ID, R, C>
-    where ID: Send + Eq,
-          R: Send + Resources,
-          <R as Resources>::Fence: Send + Sync,
-          <R as Resources>::Mapping: Send,
-          C: Send + CommandBuffer<R>
+impl<ID> System<f64> for RenderSystem<ID>
+    where ID: Send + Eq
 {
     fn run(&mut self, arg: RunArg, delta_time: Delta) {
         let mut event = self.main_channel.try_recv();
