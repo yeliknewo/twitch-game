@@ -8,6 +8,14 @@ log = "0.3.6"
 find_folder = "0.3.0"
 specs = "0.7.0"
 gfx =  "0.13.0"
-graphics = { path="../graphics" }
 components = { path="../components" }
+event_core = { path="../event_core" }
+events = { path="../events" }
+graphics = { path="../graphics" }
+
 utils = { path="../utils" }
+
+[features]
+g_glutin = ["graphics/g_glutin"]
+g_sdl2 = ["graphics/g_sdl2"]
+g_both = ["graphics/g_both"]

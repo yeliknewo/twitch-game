@@ -9,3 +9,6 @@ extern crate event_core;
 extern crate events;
 extern crate utils;
 extern crate find_folder;
+
+pub mod control;
+pub mod render;

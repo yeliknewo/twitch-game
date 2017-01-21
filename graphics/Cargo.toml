@@ -19,6 +19,6 @@ utils = {path="../utils"}
 [features]
 g_glutin = ["glutin", "gfx_window_glutin"]
 g_sdl2 = ["sdl2", "gfx_window_sdl"]
-both = ["g_glutin", "g_sdl2"]
+g_both = ["g_glutin", "g_sdl2"]
 
-default = ["both"]
+default = ["g_both"]
