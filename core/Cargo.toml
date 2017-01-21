@@ -4,4 +4,13 @@ version = "0.1.0"
 authors = ["Kiley Owen <yelikdev@gmail.com>"]
 
 [dependencies]
-utils = {path="../utils"}
+time = "0.1.36"
+log = "0.3.6"
+gfx = "0.13.0"
+
+art = { path="../art" }
+event_core = { path="../event_core" }
+events = { path="../events" }
+graphics = { path="../graphics" }
+systems = { path="../systems" }
+utils = { path="../utils" }

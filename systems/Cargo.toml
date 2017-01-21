@@ -14,8 +14,3 @@ events = { path="../events" }
 graphics = { path="../graphics" }
 
 utils = { path="../utils" }
-
-[features]
-g_glutin = ["graphics/g_glutin"]
-g_sdl2 = ["graphics/g_sdl2"]
-g_both = ["graphics/g_both"]

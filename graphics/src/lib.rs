@@ -66,7 +66,13 @@ impl<T, D, F, R> GfxWindow<sdl2::video::Window, T, D, F, R>
 impl<W, T, D, F, R> GfxWindow<W, T, D, F, R>
     where R: Resources
 {
-    pub fn new(out_color: RenderTargetView<R, ColorFormat>, out_depth: DepthStencilView<R, DepthFormat>, device: D, factory: F, window: W, extras: T) -> GfxWindow<W, T, D, F, R> {
+    pub fn new(out_color: RenderTargetView<R, ColorFormat>,
+               out_depth: DepthStencilView<R, DepthFormat>,
+               device: D,
+               factory: F,
+               window: W,
+               extras: T)
+               -> GfxWindow<W, T, D, F, R> {
         GfxWindow {
             out_color: out_color,
             out_depth: out_depth,

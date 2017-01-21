@@ -1,17 +1,17 @@
 use cgmath::{Matrix4, Ortho};
 
 #[derive(Clone, Debug)]
-pub struct OrthohgraphicHelper {
+pub struct OrthographicHelper {
     aspect_ratio: f32,
     ortho: Ortho<f32>,
 }
 
-impl OrthohgraphicHelper {
-    pub fn new(aspect_ratio: f32, left: f32, right: f32, near: f32, far: f32) -> OrthohgraphicHelper {
+impl OrthographicHelper {
+    pub fn new(aspect_ratio: f32, left: f32, right: f32, near: f32, far: f32) -> OrthographicHelper {
         let bottom = left * aspect_ratio;
         let top = right * aspect_ratio;
 
-        OrthohgraphicHelper {
+        OrthographicHelper {
             aspect_ratio: aspect_ratio,
             ortho: Ortho {
                 left: left,
@@ -61,8 +61,8 @@ impl OrthohgraphicHelper {
     }
 }
 
-impl AsRef<OrthohgraphicHelper> for OrthohgraphicHelper {
-    fn as_ref(&self) -> &OrthohgraphicHelper {
+impl AsRef<OrthographicHelper> for OrthographicHelper {
+    fn as_ref(&self) -> &OrthographicHelper {
         self
     }
 }

@@ -1,5 +1,5 @@
-max_width = 240
-ideal_width = 240
+max_width = 160
+ideal_width = 160
 tab_spaces = 4
 fn_call_width = 240
 struct_lit_width = 0

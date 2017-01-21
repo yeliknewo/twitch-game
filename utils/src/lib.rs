@@ -7,7 +7,7 @@ pub mod fps_counter;
 pub mod ortho_helper;
 
 pub use self::fps_counter::FpsCounter;
-pub use self::ortho_helper::OrthohgraphicHelper;
+pub use self::ortho_helper::OrthographicHelper;
 
 pub type Delta = f64;
 pub type Coord = f32;
